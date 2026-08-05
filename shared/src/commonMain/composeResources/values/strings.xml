@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScreenMask</string>
+    <string name="settings_title">Settings</string>
+    <string name="back">Back</string>
+    <string name="black_screen_title">Black screen overlay</string>
+    <string name="black_screen_description">Show a fullscreen black overlay. Swipe up, four-finger tap, or draw a circle to exit</string>
+    <string name="black_screen_status_running">Black screen is active</string>
+    <string name="black_screen_status_stopped">Black screen is off</string>
+    <string name="black_screen_start">Start black screen</string>
+    <string name="black_screen_stop">Stop black screen</string>
+    <string name="exit_methods_section_title">Exit methods</string>
+    <string name="exit_methods_description">Choose the gestures that exit the black screen</string>
+    <string name="exit_method_four_finger_title">Four-finger tap</string>
+    <string name="exit_method_four_finger_description">Tap the screen with 4 or more fingers at once</string>
+    <string name="exit_method_swipe_up_title">Swipe up</string>
+    <string name="exit_method_swipe_up_description">Swipe from the bottom to the top</string>
+    <string name="exit_method_draw_circle_title">Draw a circle</string>
+    <string name="exit_method_draw_circle_description">Draw a loop (O) on the screen</string>
+    <string name="options_section_title">Options</string>
+    <string name="float_ball_title">Show floating ball</string>
+    <string name="float_ball_description">Show a draggable ball; tap it to start the black screen</string>
+    <string name="ball_click_confirm_title">Confirm ball taps</string>
+    <string name="ball_click_confirm_description">Show the confirmation dialog before the ball starts the black screen</string>
+    <string name="keep_alive_section_title">Keep alive</string>
+    <string name="keep_alive_foreground_title">Foreground service</string>
+    <string name="keep_alive_foreground_description">Run as a foreground service with a persistent notification so it is not killed</string>
+    <string name="keep_alive_wakelock_title">Wake lock</string>
+    <string name="keep_alive_wakelock_description">Keep the CPU awake to survive Doze/standby</string>
+    <string name="black_screen_confirm_title">Confirm</string>
+    <string name="black_screen_confirm_message">Start black screen mode?\nSwipe up, four-finger tap, or draw a circle to exit</string>
+    <string name="confirm">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="overlay_permission_required">Overlay permission is required to show the black screen</string>
+    <string name="start_failed">Failed to start black screen</string>
+    <string name="unsupported_platform">This feature is only available on Android</string>
+</resources>

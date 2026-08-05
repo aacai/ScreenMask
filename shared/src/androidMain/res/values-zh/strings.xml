@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="black_screen_hint">上滑、四指触摸或画圈退出</string>
+    <string name="keep_alive_channel_name">保活</string>
+    <string name="black_screen_channel_name">黑屏</string>
+    <string name="keep_alive_notification_title">屏幕遮挡运行中</string>
+    <string name="keep_alive_notification_text">点击打开应用</string>
+    <string name="black_screen_notification_title">黑屏运行中</string>
+    <string name="black_screen_notification_text">点击退出</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">屏幕遮挡</string>
+    <string name="settings_title">设置</string>
+    <string name="back">返回</string>
+    <string name="black_screen_title">悬浮窗黑屏</string>
+    <string name="black_screen_description">显示全屏黑屏，上滑、四指触摸或画圈退出</string>
+    <string name="black_screen_status_running">黑屏运行中</string>
+    <string name="black_screen_status_stopped">黑屏未开启</string>
+    <string name="black_screen_start">开启黑屏</string>
+    <string name="black_screen_stop">关闭黑屏</string>
+    <string name="exit_methods_section_title">退出方式</string>
+    <string name="exit_methods_description">选择可以退出黑屏的手势</string>
+    <string name="exit_method_four_finger_title">四指触摸</string>
+    <string name="exit_method_four_finger_description">4 根或更多手指同时触摸屏幕</string>
+    <string name="exit_method_swipe_up_title">上滑</string>
+    <string name="exit_method_swipe_up_description">从屏幕底部向上滑动</string>
+    <string name="exit_method_draw_circle_title">画圈</string>
+    <string name="exit_method_draw_circle_description">在屏幕上画一个圆圈（O）</string>
+    <string name="options_section_title">选项</string>
+    <string name="float_ball_title">显示悬浮球</string>
+    <string name="float_ball_description">显示可拖动的小球，点击小球开启黑屏</string>
+    <string name="ball_click_confirm_title">点击二次确认</string>
+    <string name="ball_click_confirm_description">点击悬浮球后先弹窗确认再开启黑屏</string>
+    <string name="keep_alive_section_title">保活</string>
+    <string name="keep_alive_foreground_title">前台服务</string>
+    <string name="keep_alive_foreground_description">以带常驻通知的前台服务运行，防止被杀掉</string>
+    <string name="keep_alive_wakelock_title">唤醒锁</string>
+    <string name="keep_alive_wakelock_description">保持 CPU 唤醒，防止系统休眠后停止服务</string>
+    <string name="black_screen_confirm_title">确认</string>
+    <string name="black_screen_confirm_message">确定开启黑屏模式？\n上滑、四指触摸或画圈退出</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="overlay_permission_required">开启黑屏需要悬浮窗权限</string>
+    <string name="start_failed">黑屏开启失败</string>
+    <string name="unsupported_platform">该功能仅支持 Android</string>
+</resources>
