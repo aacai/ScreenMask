@@ -1,21 +1,8 @@
 # 🖤 ScreenMask
 ## ✨ 项目简介
 
-**ScreenMask** 是一个跨平台「屏幕遮挡」工具，基于 **Kotlin Multiplatform + Compose Multiplatform** 构建，
-通过系统悬浮窗权限叠加一层全屏黑屏，点击悬浮球即可一键开启，并支持多种手势退出与保活能力，
-同一套 UI 与业务逻辑运行在 Android 与 iOS 上。
-
-> 一套代码，多端运行 —— Kotlin Multiplatform 与 Compose 的跨端实践项目。
-
-### 核心特性
-
-- 🔘 **悬浮球一键黑屏**：可拖动的悬浮球常驻屏幕，点击即开启全屏黑屏，再点即退出
-- ✋ **三种退出手势**：4 指及以上触摸 / 从底部上滑 / 画一个圆圈（O），全部可单独开关
-- 📴 **息屏即退**：黑屏期间按电源键熄屏、或锁屏后解锁桌面，立即取消黑屏，防止“遮过头”
-- 🛡️ **保活**：可选前台服务 + 常驻通知 / 唤醒锁，避免长时间黑屏后服务被杀
-- 🌐 **国际化 (i18n)**：内置「跟随系统 / 中文 / English」资源
-- 🌗 **深浅色主题**：支持亮色 / 暗色一键切换（樱花粉配色）
-- 📱 **双端同 UI**：Android、iOS 共享全部界面与业务逻辑
+**ScreenMask** 是一个跨平台「假装黑屏」工具。让手黑屏但不休眠，对OLED屏幕友好。省电。
+通过系统悬浮窗权限叠加一层全屏黑屏，让屏幕看起来已熄屏/关机（假黑屏），点击悬浮球即可一键开启，并支持多种手势退出与保活能力，
 
 ---
 
@@ -76,18 +63,6 @@ ScreenMask/
 `KeepAlive` 提供统一的前台服务与唤醒锁帮助方法：
 - **前台服务 + 常驻通知**：`startForeground(FOREGROUND_SERVICE_TYPE_SPECIAL_USE)`，通知可点击直接退出黑屏；
 - **唤醒锁**：`PARTIAL_WAKE_LOCK` 防止系统休眠后服务被冻结。
-
-### 持久化
-自研极简键值存储抽象 `KeyValueStore`（零第三方依赖），双端分别落地：
-
-| 平台 | 实现 |
-|------|------|
-| Android | `SharedPreferences` |
-| iOS | `NSUserDefaults` |
-
-用于保存悬浮球开关、三种退出方式开关、前台服务 / 唤醒锁保活开关。
-
----
 
 <div align="center">
 Made with ❤️ and Kotlin Multiplatform
