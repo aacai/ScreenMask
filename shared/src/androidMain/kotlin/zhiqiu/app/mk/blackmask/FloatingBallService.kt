@@ -27,7 +27,7 @@ class FloatingBallService : Service() {
 
     companion object {
         private const val TAG = "FloatingBallService"
-        private const val BALL_SIZE_DP = 56f
+        private const val BALL_SIZE_DP = 60f
 
         private var instance: FloatingBallService? = null
 

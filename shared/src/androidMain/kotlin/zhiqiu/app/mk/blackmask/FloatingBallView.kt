@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RadialGradient
+import android.graphics.RectF
 import android.graphics.Shader
 import android.view.MotionEvent
 import android.view.View
@@ -15,9 +16,9 @@ import kotlin.math.min
 /**
  * Content of the independent floating ball window.
  *
- * A mainstream "glossy ball": a radial-gradient sphere with a soft specular highlight.
- * It is purely decorative - no icon, no control - and translucent enough not to risk
- * OLED burn-in.
+ * A vivid "power" ball in the app's cyan→indigo palette: opaque glossy body, soft drop shadow,
+ * white rim and a power symbol, so it stays clearly visible on both light and dark screens.
+ * The colors match [zhiqiu.app.mk.ui.theme.AccentGradient].
  *
  * The ball manages its own window position: dragging moves it around (clamped to the
  * screen) and releasing snaps it to the nearest edge. A tap (no movement beyond the
@@ -38,15 +39,20 @@ class FloatingBallView(
         style = Paint.Style.FILL
     }
     private val highlightPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0xB3FFFFFF.toInt()
+        color = 0x8CFFFFFF.toInt()
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
     }
-    private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x59FFFFFF.toInt()
+    private val rimPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = 0xCCFFFFFF.toInt()
         style = Paint.Style.STROKE
-        strokeWidth = resources.displayMetrics.density
     }
+    private val powerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = 0xFFFFFFFF.toInt()
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+    }
+    private val powerRect = RectF()
 
     private var lastRawX = 0f
     private var lastRawY = 0f
@@ -58,11 +64,20 @@ class FloatingBallView(
         val cx = width / 2f
         val cy = height / 2f
 
-        // Bright in the centre fading to translucent at the edge - the classic glossy ball.
+        // Soft drop shadow lifts the ball off any background so it is easy to spot.
+        bodyPaint.setShadowLayer(radius * 0.5f, 0f, radius * 0.22f, 0x66000000.toInt())
+
+        // Opaque glossy body: light cyan at the lit corner deepening to indigo at the bottom.
         if (shaderRadius != radius) {
             bodyPaint.shader = RadialGradient(
-                cx, cy, radius,
-                intArrayOf(0xE6FFFFFF.toInt(), 0x99FFFFFF.toInt(), 0x40FFFFFF.toInt()),
+                cx - radius * 0.25f,
+                cy - radius * 0.35f,
+                radius * 1.5f,
+                intArrayOf(
+                    0xFFD8F7F1.toInt(), // light cyan highlight
+                    0xFF2DB5A0.toInt(), // AccentCyan
+                    0xFF2F4488.toInt(), // deep indigo
+                ),
                 floatArrayOf(0.0f, 0.55f, 1.0f),
                 Shader.TileMode.CLAMP
             )
@@ -71,14 +86,22 @@ class FloatingBallView(
         canvas.drawCircle(cx, cy, radius, bodyPaint)
 
         // Specular highlight near the top, like mainstream assistant floating balls.
-        highlightPaint.strokeWidth = radius * 0.18f
+        highlightPaint.strokeWidth = radius * 0.16f
         canvas.drawArc(
             cx - radius, cy - radius, cx + radius, cy + radius,
             -115f, 75f, false, highlightPaint
         )
 
-        // Subtle outer ring for definition.
-        canvas.drawCircle(cx, cy, radius - borderPaint.strokeWidth / 2f, borderPaint)
+        // White rim for clear definition against any background.
+        rimPaint.strokeWidth = radius * 0.09f
+        canvas.drawCircle(cx, cy, radius - rimPaint.strokeWidth / 2f, rimPaint)
+
+        // Power symbol: a ring with a gap at the top and a rising stem, hinting the black-screen toggle.
+        powerPaint.strokeWidth = radius * 0.15f
+        val glyphRadius = radius * 0.34f
+        powerRect.set(cx - glyphRadius, cy - glyphRadius, cx + glyphRadius, cy + glyphRadius)
+        canvas.drawArc(powerRect, 35f, 290f, false, powerPaint)
+        canvas.drawLine(cx, cy - glyphRadius, cx, cy - radius * 0.66f, powerPaint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
