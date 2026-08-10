@@ -47,6 +47,7 @@ class BlackScreenService : Service() {
     companion object {
         private const val TAG = "BlackScreenService"
         const val EXTRA_STOP = "stop"
+        const val EXTRA_TOGGLE = "toggle"
         private const val MIN_SWIPE_DISTANCE = 200F
         private const val MIN_SWIPE_VELOCITY = -500F
         private const val HINT_TOAST_DELAY_MILLIS = 500L
@@ -124,6 +125,11 @@ class BlackScreenService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.getBooleanExtra(EXTRA_STOP, false) == true) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
+        if (intent?.getBooleanExtra(EXTRA_TOGGLE, false) == true && overlayView != null) {
+            // The black screen is already showing: tapping the persistent notification exits it.
             stopSelf()
             return START_NOT_STICKY
         }

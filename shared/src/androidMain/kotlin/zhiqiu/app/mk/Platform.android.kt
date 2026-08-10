@@ -7,3 +7,11 @@ class AndroidPlatform : Platform {
 }
 
 actual fun getPlatform(): Platform = AndroidPlatform()
+
+private var _applicationContext: android.content.Context? = null
+
+fun initPlatformContext(context: android.content.Context) {
+    _applicationContext = context.applicationContext
+}
+
+fun getApplicationContext(): android.content.Context? = _applicationContext

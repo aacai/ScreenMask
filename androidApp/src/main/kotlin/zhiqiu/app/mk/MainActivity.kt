@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
 
         requestNotificationPermission()
         setAndroidContext(applicationContext)
+        initPlatformContext(applicationContext)
         initBlackScreen(applicationContext)
         handleConfirmRequest(intent)
 

@@ -4,7 +4,7 @@
     <string name="keep_alive_channel_name">Keep alive</string>
     <string name="black_screen_channel_name">Black screen</string>
     <string name="keep_alive_notification_title">ScreenMask running</string>
-    <string name="keep_alive_notification_text">Tap to open the app</string>
+    <string name="keep_alive_notification_text">Tap to start black screen</string>
     <string name="black_screen_notification_title">Black screen active</string>
     <string name="black_screen_notification_text">Tap to exit</string>
 </resources>

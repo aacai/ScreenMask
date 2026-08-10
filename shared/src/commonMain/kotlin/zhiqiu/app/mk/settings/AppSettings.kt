@@ -38,7 +38,12 @@ class AppSettings(private val store: KeyValueStore = createKeyValueStore()) {
         get() = store.getBoolean(KEY_KEEP_ALIVE_WAKE_LOCK, false)
         set(value) = store.putBoolean(KEY_KEEP_ALIVE_WAKE_LOCK, value)
 
-    private companion object {
+    /** 应用语言：zh_CN / en / follow_system。默认跟随系统。 */
+    var language: String
+        get() = store.getString(KEY_LANGUAGE) ?: VALUE_FOLLOW_SYSTEM
+        set(value) = store.putString(KEY_LANGUAGE, value)
+
+    companion object {
         const val KEY_SHOW_FLOATING_BALL = "mask.show_floating_ball"
         const val KEY_BALL_CLICK_CONFIRM = "mask.ball_click_confirm"
         const val KEY_EXIT_METHOD_FOUR_FINGER = "mask.exit_method_four_finger"
@@ -46,5 +51,9 @@ class AppSettings(private val store: KeyValueStore = createKeyValueStore()) {
         const val KEY_EXIT_METHOD_DRAW_CIRCLE = "mask.exit_method_draw_circle"
         const val KEY_KEEP_ALIVE_FOREGROUND = "mask.keep_alive_foreground"
         const val KEY_KEEP_ALIVE_WAKE_LOCK = "mask.keep_alive_wake_lock"
+        const val KEY_LANGUAGE = "mask.language"
+        const val VALUE_FOLLOW_SYSTEM = "follow_system"
+        const val VALUE_LANG_ZH_CN = "zh_CN"
+        const val VALUE_LANG_EN = "en"
     }
 }

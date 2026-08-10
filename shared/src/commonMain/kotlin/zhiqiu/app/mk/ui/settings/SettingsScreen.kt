@@ -7,11 +7,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -33,6 +37,7 @@ import screenmask.shared.generated.resources.Res
 import screenmask.shared.generated.resources.back
 import screenmask.shared.generated.resources.ball_click_confirm_description
 import screenmask.shared.generated.resources.ball_click_confirm_title
+import screenmask.shared.generated.resources.cancel
 import screenmask.shared.generated.resources.exit_method_four_finger_description
 import screenmask.shared.generated.resources.exit_method_four_finger_title
 import screenmask.shared.generated.resources.exit_method_draw_circle_description
@@ -49,12 +54,18 @@ import screenmask.shared.generated.resources.keep_alive_section_title
 import screenmask.shared.generated.resources.keep_alive_wakelock_description
 import screenmask.shared.generated.resources.keep_alive_wakelock_title
 import screenmask.shared.generated.resources.options_section_title
+import screenmask.shared.generated.resources.settings_language
+import screenmask.shared.generated.resources.settings_language_chinese
+import screenmask.shared.generated.resources.settings_language_english
+import screenmask.shared.generated.resources.settings_language_follow_system
 import screenmask.shared.generated.resources.settings_title
 import zhiqiu.app.mk.settings.AppSettings
 import zhiqiu.app.mk.ui.BlackScreenConfirmDialog
 import zhiqiu.app.mk.ui.UnsupportedNotice
 import zhiqiu.app.mk.ui.rememberBlackScreenViewModel
 import zhiqiu.app.mk.ui.theme.appSwitchColors
+import zhiqiu.app.mk.util.LanguageCodes
+import zhiqiu.app.mk.util.setLanguage
 
 /** Settings page reached from the home screen top bar. */
 class SettingsScreen : Screen {
@@ -78,6 +89,7 @@ class SettingsScreen : Screen {
         var drawCircle by remember { mutableStateOf(settings.exitMethodDrawCircle) }
         var keepAliveForeground by remember { mutableStateOf(settings.keepAliveForeground) }
         var keepAliveWakeLock by remember { mutableStateOf(settings.keepAliveWakeLock) }
+        var showLanguageDialog by remember { mutableStateOf(false) }
 
         Scaffold(
             topBar = {
@@ -152,6 +164,18 @@ class SettingsScreen : Screen {
 
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
+                        SettingItem(
+                            title = stringResource(Res.string.settings_language),
+                            summary = when (settings.language) {
+                                AppSettings.VALUE_LANG_ZH_CN ->
+                                    stringResource(Res.string.settings_language_chinese)
+                                AppSettings.VALUE_LANG_EN ->
+                                    stringResource(Res.string.settings_language_english)
+                                else ->
+                                    stringResource(Res.string.settings_language_follow_system)
+                            },
+                            onClick = { showLanguageDialog = true }
+                        )
                         SettingsSwitchRow(
                             title = stringResource(Res.string.float_ball_title),
                             description = stringResource(Res.string.float_ball_description),
@@ -210,6 +234,25 @@ class SettingsScreen : Screen {
         }
 
         BlackScreenConfirmDialog(viewModel)
+
+        if (showLanguageDialog) {
+            LanguageSelectionDialog(
+                currentLang = settings.language,
+                onSelect = { lang ->
+                    settings.language = lang
+                    setLanguage(
+                        when (lang) {
+                            AppSettings.VALUE_LANG_ZH_CN -> LanguageCodes.ZH_CN
+                            AppSettings.VALUE_LANG_EN -> LanguageCodes.EN
+                            AppSettings.VALUE_FOLLOW_SYSTEM -> null
+                            else -> lang
+                        }
+                    )
+                    showLanguageDialog = false
+                },
+                onDismiss = { showLanguageDialog = false }
+            )
+        }
     }
 }
 
@@ -241,6 +284,96 @@ private fun SettingsSwitchRow(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = appSwitchColors()
+        )
+    }
+}
+
+/** A clickable labelled row used on the settings page. */
+@Composable
+private fun SettingItem(
+    title: String,
+    summary: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = summary,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun LanguageSelectionDialog(
+    currentLang: String,
+    onSelect: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(Res.string.settings_language)) },
+        text = {
+            Column {
+                LanguageDialogOption(
+                    text = stringResource(Res.string.settings_language_follow_system),
+                    selected = currentLang == AppSettings.VALUE_FOLLOW_SYSTEM,
+                    onClick = { onSelect(AppSettings.VALUE_FOLLOW_SYSTEM) }
+                )
+                LanguageDialogOption(
+                    text = stringResource(Res.string.settings_language_chinese),
+                    selected = currentLang == AppSettings.VALUE_LANG_ZH_CN,
+                    onClick = { onSelect(AppSettings.VALUE_LANG_ZH_CN) }
+                )
+                LanguageDialogOption(
+                    text = stringResource(Res.string.settings_language_english),
+                    selected = currentLang == AppSettings.VALUE_LANG_EN,
+                    onClick = { onSelect(AppSettings.VALUE_LANG_EN) }
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(Res.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun LanguageDialogOption(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 12.dp, horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(
+            selected = selected,
+            onClick = null // null because Row handles the click
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }

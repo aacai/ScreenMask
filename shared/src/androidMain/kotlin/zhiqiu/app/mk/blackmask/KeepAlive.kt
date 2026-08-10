@@ -46,12 +46,14 @@ internal object KeepAlive {
     }
 
     fun keepAliveNotification(context: Context): Notification {
-        // Tapping the persistent notification opens the app.
-        val launch = context.packageManager.getLaunchIntentForPackage(context.packageName)
-        val pending = PendingIntent.getActivity(
+        // Tapping the persistent notification toggles the black screen directly.
+        // The request code must differ from blackScreenNotification's so the two PendingIntents
+        // (same component, different extras) never collide.
+        val toggle = PendingIntent.getService(
             context,
-            0,
-            launch,
+            KEEP_ALIVE_NOTIFICATION_ID,
+            Intent(context, BlackScreenService::class.java)
+                .putExtra(BlackScreenService.EXTRA_TOGGLE, true),
             PendingIntent.FLAG_IMMUTABLE
         )
         return buildNotification(
@@ -59,7 +61,7 @@ internal object KeepAlive {
             KEEP_ALIVE_CHANNEL_ID,
             context.getString(R.string.keep_alive_notification_title),
             context.getString(R.string.keep_alive_notification_text),
-            pending
+            toggle
         )
     }
 
